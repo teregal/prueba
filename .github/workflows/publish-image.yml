@@ -1,4 +1,4 @@
-name: Java CI and Release
+name: Publish Image
 
 on:
   push:
