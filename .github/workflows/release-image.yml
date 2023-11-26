@@ -9,8 +9,19 @@ permissions:
   packages: write
 
 jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
   build-image:
     runs-on: ubuntu-latest
+    requires: login
 
     steps:
       - name: Checkout Repository
@@ -18,12 +29,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean package
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Get the version number from tag
         run: echo "VERSION_NUMBER=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
