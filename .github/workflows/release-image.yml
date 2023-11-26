@@ -21,7 +21,7 @@ jobs:
 
   build-image:
     runs-on: ubuntu-latest
-    requires: login
+    needs: login
 
     steps:
       - name: Checkout Repository
